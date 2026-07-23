@@ -1,8 +1,7 @@
 /* ==========================================================================
-   WEIGHT GAIN DASHBOARD — SCRIPT
+   Bibek Routine — SCRIPT
    Sections: Data, Loading Screen, Background FX, Header/Nav, Clock, Theme,
-   Typing Effect, Counters, Tilt, Parallax, Timeline, Workout, Nutrition,
-   Shopping, Checklist + Progress + LocalStorage, Weight Tracker, Confetti,
+   Typing Effect, Counters, Tilt, Parallax, Timeline, Workout, Checklist + Progress + LocalStorage, Confetti,
    Scroll Reveal, FAB, Ripple
    ========================================================================== */
 
@@ -45,19 +44,6 @@
     { icon: '🤸', name: 'Stretching', detail: '5 minutes' },
   ];
 
-  const NUTRITION_DATA = [
-    { icon: '🥚', name: 'Eggs', qty: '2 per day' },
-    { icon: '🍌', name: 'Bananas', qty: '3 per day' },
-    { icon: '🥜', name: 'Roasted Peanuts', qty: '2 handfuls' },
-    { icon: '🍚', name: 'Rice', qty: 'Daily' },
-    { icon: '🍛', name: 'Dal', qty: 'Daily' },
-    { icon: '🥦', name: 'Seasonal Vegetables', qty: 'Daily' },
-    { icon: '🍇', name: 'Raisins', qty: 'Handful' },
-    { icon: '🌰', name: 'Almonds', qty: '4–5 pcs' },
-    { icon: '🥥', name: 'Cashews', qty: '4–5 pcs' },
-    { icon: '💧', name: 'Water', qty: '2.5–3 L' },
-  ];
-
   const SHOPPING_DATA = [
     { icon: '🥚', name: 'Eggs', qty: '60 pcs' },
     { icon: '🍌', name: 'Bananas', qty: '90 pcs' },
@@ -67,15 +53,12 @@
     { icon: '🥥', name: 'Cashews', qty: '250 g' },
   ];
 
-  const TYPED_STRING = 'Healthy Weight Gain Journey';
+  const TYPED_STRING = 'A Journey of Growth, Strength, and Confidence';
   const MILESTONES = [51, 52, 54, 56, 58, 60];
   const CURRENT_WEIGHT = 51;
   const GOAL_WEIGHT = 60;
   const STORAGE_KEY = 'wgd_checklist_v1';
   const THEME_KEY = 'wgd_theme';
-  const REMINDER_IDS_KEY = 'wgd_reminder_ids_v1';
-  const REMINDER_FIRED_KEY = 'wgd_reminder_fired_v1';
-  const REMINDERS_ON_KEY = 'wgd_reminders_on';
 
   /* ------------------------------------------------------------------ */
   /* LOADING SCREEN                                                      */
@@ -327,10 +310,7 @@
           <div class="tl-title">${item.title}</div>
           <div class="tl-desc">${item.desc}</div>
         </div>
-        <div class="tl-actions">
-          <span class="tl-bell" data-id="routine-${idx}" role="checkbox" aria-checked="false" tabindex="0" title="Remind me at ${item.time}">🔔</span>
-          <span class="tl-check" data-id="routine-${idx}" role="checkbox" aria-checked="false" tabindex="0"></span>
-        </div>
+        <span class="tl-check" data-id="routine-${idx}" role="checkbox" aria-checked="false" tabindex="0"></span>
       `;
       frag.appendChild(el);
     });
@@ -352,44 +332,6 @@
         <div class="workout-icon">${w.icon}</div>
         <div class="workout-name">${w.name}</div>
         <div class="workout-detail">${w.detail}</div>
-      `;
-      frag.appendChild(el);
-    });
-    container.appendChild(frag);
-  }
-
-  /* ------------------------------------------------------------------ */
-  /* RENDER: NUTRITION + SHOPPING                                        */
-  /* ------------------------------------------------------------------ */
-
-  function renderNutrition() {
-    const container = document.getElementById('nutritionGrid');
-    const frag = document.createDocumentFragment();
-    NUTRITION_DATA.forEach((n) => {
-      const el = document.createElement('div');
-      el.className = 'food-card';
-      el.innerHTML = `
-        <div class="food-icon">${n.icon}</div>
-        <div class="food-name">${n.name}</div>
-        <div class="food-qty">${n.qty}</div>
-      `;
-      frag.appendChild(el);
-    });
-    container.appendChild(frag);
-  }
-
-  function renderShopping() {
-    const container = document.getElementById('shoppingGrid');
-    const frag = document.createDocumentFragment();
-    SHOPPING_DATA.forEach((s) => {
-      const el = document.createElement('div');
-      el.className = 'shop-card';
-      el.innerHTML = `
-        <div class="shop-icon">${s.icon}</div>
-        <div>
-          <div class="shop-name">${s.name}</div>
-          <div class="shop-qty">${s.qty}</div>
-        </div>
       `;
       frag.appendChild(el);
     });
@@ -511,22 +453,22 @@
   }
 
   /* ------------------------------------------------------------------ */
-  /* WEIGHT TRACKER MILESTONES                                          */
-  /* ------------------------------------------------------------------ */
+  // /* WEIGHT TRACKER MILESTONES                                          */
+  // /* ------------------------------------------------------------------ */
 
-  function initWeightTracker() {
-    const fill = document.getElementById('milestoneFill');
-    const range = GOAL_WEIGHT - MILESTONES[0];
-    const progressAcrossRange = ((CURRENT_WEIGHT - MILESTONES[0]) / range) * 100;
-    requestAnimationFrame(() => {
-      fill.style.width = Math.max(progressAcrossRange, 2) + '%';
-    });
+  // function initWeightTracker() {
+  //   const fill = document.getElementById('milestoneFill');
+  //   const range = GOAL_WEIGHT - MILESTONES[0];
+  //   const progressAcrossRange = ((CURRENT_WEIGHT - MILESTONES[0]) / range) * 100;
+  //   requestAnimationFrame(() => {
+  //     fill.style.width = Math.max(progressAcrossRange, 2) + '%';
+  //   });
 
-    document.querySelectorAll('.milestone').forEach((m) => {
-      const w = parseFloat(m.dataset.weight);
-      if (w <= CURRENT_WEIGHT) m.classList.add('reached');
-    });
-  }
+  //   document.querySelectorAll('.milestone').forEach((m) => {
+  //     const w = parseFloat(m.dataset.weight);
+  //     if (w <= CURRENT_WEIGHT) m.classList.add('reached');
+  //   });
+  // }
 
   /* ------------------------------------------------------------------ */
   /* CONFETTI                                                            */
@@ -634,242 +576,6 @@
   }
 
   /* ------------------------------------------------------------------ */
-  /* TOAST                                                               */
-  /* ------------------------------------------------------------------ */
-
-  let toastTimer = null;
-  function showToast(message, duration) {
-    const toast = document.getElementById('toast');
-    toast.textContent = message;
-    toast.classList.add('visible');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('visible'), duration || 2800);
-  }
-
-  /* ------------------------------------------------------------------ */
-  /* SERVICE WORKER REGISTRATION (offline support + notification clicks) */
-  /* ------------------------------------------------------------------ */
-
-  function initServiceWorker() {
-    if (!('serviceWorker' in navigator)) return;
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./service-worker.js').catch(() => {
-        // Offline support just won't be available; app still works fully online.
-      });
-    });
-  }
-
-  /* ------------------------------------------------------------------ */
-  /* INSTALL PROMPT (Add to Home Screen)                                 */
-  /* ------------------------------------------------------------------ */
-
-  let deferredInstallPrompt = null;
-
-  function initInstallBanner() {
-    const banner = document.getElementById('installBanner');
-    const installBtn = document.getElementById('installBtn');
-    const closeBtn = document.getElementById('installClose');
-
-    // Don't show again this session if the user dismissed it, or if already installed
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredInstallPrompt = e;
-      if (!isStandalone && !sessionStorage.getItem('wgd_install_dismissed')) {
-        setTimeout(() => banner.classList.add('visible'), 1500);
-      }
-    });
-
-    installBtn.addEventListener('click', async () => {
-      if (!deferredInstallPrompt) return;
-      banner.classList.remove('visible');
-      deferredInstallPrompt.prompt();
-      const choice = await deferredInstallPrompt.userChoice;
-      deferredInstallPrompt = null;
-      if (choice && choice.outcome === 'accepted') {
-        showToast('App installed 💪');
-      }
-    });
-
-    closeBtn.addEventListener('click', () => {
-      banner.classList.remove('visible');
-      sessionStorage.setItem('wgd_install_dismissed', '1');
-    });
-
-    window.addEventListener('appinstalled', () => {
-      banner.classList.remove('visible');
-      showToast('App installed 💪');
-    });
-  }
-
-  /* ------------------------------------------------------------------ */
-  /* REMINDERS — per-task browser notifications                         */
-  /* ------------------------------------------------------------------ */
-
-  function loadReminderIds() {
-    try {
-      return new Set(JSON.parse(localStorage.getItem(REMINDER_IDS_KEY) || '[]'));
-    } catch (e) {
-      return new Set();
-    }
-  }
-  function saveReminderIds(set) {
-    localStorage.setItem(REMINDER_IDS_KEY, JSON.stringify(Array.from(set)));
-  }
-
-  function loadFiredLog() {
-    try {
-      const raw = JSON.parse(localStorage.getItem(REMINDER_FIRED_KEY) || '{}');
-      const today = new Date().toDateString();
-      if (raw.date !== today) return { date: today, ids: [] };
-      return raw;
-    } catch (e) {
-      return { date: new Date().toDateString(), ids: [] };
-    }
-  }
-  function saveFiredLog(log) {
-    localStorage.setItem(REMINDER_FIRED_KEY, JSON.stringify(log));
-  }
-
-  let reminderIds = loadReminderIds();
-  let firedLog = loadFiredLog();
-  let remindersEnabled = localStorage.getItem(REMINDERS_ON_KEY) === '1';
-
-  // Parses the first "H:MM AM/PM" occurrence in a routine time string into minutes since midnight
-  function parseTimeToMinutes(str) {
-    const match = str.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
-    if (!match) return null;
-    let hours = parseInt(match[1], 10);
-    const minutes = parseInt(match[2], 10);
-    const ampm = match[3].toUpperCase();
-    if (ampm === 'PM' && hours !== 12) hours += 12;
-    if (ampm === 'AM' && hours === 12) hours = 0;
-    return hours * 60 + minutes;
-  }
-
-  function syncBellUI() {
-    document.querySelectorAll('.tl-bell').forEach((bell) => {
-      const on = reminderIds.has(bell.dataset.id);
-      bell.classList.toggle('on', on);
-      bell.setAttribute('aria-checked', String(on));
-    });
-    const headerBell = document.getElementById('reminderBellToggle');
-    headerBell.textContent = remindersEnabled ? '🔔' : '🔕';
-    headerBell.classList.toggle('active', remindersEnabled);
-  }
-
-  function requestNotificationPermission() {
-    if (!('Notification' in window)) {
-      showToast('Notifications are not supported on this browser');
-      return Promise.resolve(false);
-    }
-    if (Notification.permission === 'granted') return Promise.resolve(true);
-    if (Notification.permission === 'denied') {
-      showToast('Notifications are blocked — enable them in your browser settings');
-      return Promise.resolve(false);
-    }
-    return Notification.requestPermission().then((perm) => perm === 'granted');
-  }
-
-  function fireNotification(item) {
-    const title = `⏰ ${item.title}`;
-    const options = {
-      body: item.desc || `It's time for ${item.title} (${item.time})`,
-      icon: 'icon-192.png',
-      badge: 'icon-192.png',
-      tag: 'wgd-' + item.title,
-      vibrate: [120, 60, 120],
-    };
-    if (navigator.serviceWorker && navigator.serviceWorker.ready) {
-      navigator.serviceWorker.ready.then((reg) => {
-        if (reg.showNotification) reg.showNotification(title, options);
-        else new Notification(title, options);
-      }).catch(() => {
-        try { new Notification(title, options); } catch (e) { /* no-op */ }
-      });
-    } else {
-      try { new Notification(title, options); } catch (e) { /* no-op */ }
-    }
-  }
-
-  function checkReminders() {
-    if (!remindersEnabled || reminderIds.size === 0) return;
-    if (!('Notification' in window) || Notification.permission !== 'granted') return;
-
-    // Roll the fired log over to a fresh day automatically
-    const today = new Date().toDateString();
-    if (firedLog.date !== today) firedLog = { date: today, ids: [] };
-
-    const now = new Date();
-    const nowMinutes = now.getHours() * 60 + now.getMinutes();
-
-    ROUTINE_DATA.forEach((item, idx) => {
-      const id = 'routine-' + idx;
-      if (!reminderIds.has(id)) return;
-      if (firedLog.ids.includes(id)) return;
-      const taskMinutes = parseTimeToMinutes(item.time);
-      if (taskMinutes === null) return;
-      // Fire within a 1-minute window of the scheduled time
-      if (nowMinutes === taskMinutes) {
-        fireNotification(item);
-        firedLog.ids.push(id);
-        saveFiredLog(firedLog);
-      }
-    });
-  }
-
-  function toggleReminderForTask(id) {
-    if (reminderIds.has(id)) {
-      reminderIds.delete(id);
-    } else {
-      if (!remindersEnabled) {
-        showToast('Turn on reminders (bell icon, top right) first');
-        return;
-      }
-      reminderIds.add(id);
-    }
-    saveReminderIds(reminderIds);
-    syncBellUI();
-  }
-
-  function initReminders() {
-    const headerBell = document.getElementById('reminderBellToggle');
-
-    headerBell.addEventListener('click', async () => {
-      if (remindersEnabled) {
-        remindersEnabled = false;
-        localStorage.setItem(REMINDERS_ON_KEY, '0');
-        syncBellUI();
-        showToast('Reminders turned off');
-        return;
-      }
-      const granted = await requestNotificationPermission();
-      if (granted) {
-        remindersEnabled = true;
-        localStorage.setItem(REMINDERS_ON_KEY, '1');
-        syncBellUI();
-        showToast('Reminders on — tap 🔔 on any task to schedule it');
-      }
-    });
-
-    document.querySelectorAll('.tl-bell').forEach((bell) => {
-      bell.addEventListener('click', () => toggleReminderForTask(bell.dataset.id));
-      bell.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          toggleReminderForTask(bell.dataset.id);
-        }
-      });
-    });
-
-    syncBellUI();
-    // Check once a minute; also check immediately so a same-minute load isn't missed
-    checkReminders();
-    setInterval(checkReminders, 20000);
-  }
-
-  /* ------------------------------------------------------------------ */
   /* HERO INIT (after loader hides)                                      */
   /* ------------------------------------------------------------------ */
 
@@ -890,13 +596,9 @@
     initTheme();
     initCustomCursor();
     initParallax();
-    initServiceWorker();
-    initInstallBanner();
 
     renderTimeline();
     renderWorkout();
-    renderNutrition();
-    renderShopping();
     renderChecklist();
 
     initTilt(); // must run after cards exist
@@ -905,8 +607,6 @@
     initFab();
     initRipple();
     initResetButton();
-    initWeightTracker();
-    initReminders(); // must run after timeline bells exist
 
     attachTimelineCheckEvents();
     attachChecklistEvents();
