@@ -2,7 +2,7 @@
    SERVICE WORKER — offline caching + notification click handling
    ========================================================================== */
 
-const CACHE_NAME = 'wgd-cache-v2';
+const CACHE_NAME = 'wgd-cache-v3';
 const ASSETS = [
   './',
   './index.html',
