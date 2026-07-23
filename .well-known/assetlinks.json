@@ -1,1 +1,8 @@
-
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "io.github.thebibekyadav.twa",
+        "sha256_cert_fingerprints": ["88:76:EB:27:4F:3F:08:2F:32:63:52:EB:29:29:3D:56:45:20:D7:ED:42:A5:F6:90:59:0C:A7:FF:53:D5:B6:D2"]
+      }
+    }]
