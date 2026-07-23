@@ -3,19 +3,11 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Weight Gain Dashboard — Healthy Weight Gain Journey</title>
+<title>Bibek Routine </title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="style.css" />
-<link rel="manifest" href="manifest.json" />
-<link rel="icon" href="icon-192.png" />
-<link rel="apple-touch-icon" href="icon-192.png" />
-<meta name="theme-color" content="#0F172A" />
-<meta name="mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="WG Dashboard" />
 </head>
 <body>
 
@@ -26,7 +18,7 @@
     <div class="loader-inner">
       <div class="loader-ring"></div>
       <div class="loader-icon">💪</div>
-      <p class="loader-text">Loading your journey<span class="dots"><span>.</span><span>.</span><span>.</span></span></p>
+      <p class="loader-text">Heyy Bibek!! <span class="dots"><span>.</span><span>.</span><span>.</span></span></p>
     </div>
   </div>
 
@@ -54,23 +46,19 @@
     <div class="header-inner">
       <div class="logo">
         <span class="logo-emoji">💪</span>
-        <span class="logo-text">Weight Gain <span>Dashboard</span></span>
+        <span class="logo-text">Bibek <span>Routine</span></span>
       </div>
 
       <nav class="main-nav" id="mainNav">
         <a href="#home" class="nav-link active" data-section="home">Home</a>
         <a href="#routine" class="nav-link" data-section="routine">Routine</a>
+         <a href="#progress" class="nav-link" data-section="progress">Progress</a>
         <a href="#workout" class="nav-link" data-section="workout">Workout</a>
-        <a href="#nutrition" class="nav-link" data-section="nutrition">Nutrition</a>
-        <a href="#progress" class="nav-link" data-section="progress">Progress</a>
-        <a href="#about" class="nav-link" data-section="about">About</a>
+       
       </nav>
 
       <div class="header-right">
         <div class="live-clock" id="liveClock">--:--:--</div>
-        <button class="reminder-bell" id="reminderBellToggle" aria-label="Enable reminders" title="Enable reminders">
-          🔕
-        </button>
         <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
           <span class="toggle-icon sun">☀️</span>
           <span class="toggle-icon moon">🌙</span>
@@ -90,40 +78,25 @@
   <section id="home" class="hero reveal">
     <div class="hero-inner">
       <div class="hero-text">
-        <p class="hero-eyebrow">🌱 Day by day, kilogram by kilogram</p>
+        <p class="hero-eyebrow">🌱 Day by day, growing stronger and better 💪</p>
         <h1 class="hero-title">
           <span id="typedTitle"></span><span class="cursor-blink">|</span>
         </h1>
         <p class="hero-subtitle">
-          Building a stronger frame — one plate of rice, one push-up, one good night's sleep at a time.
-        </p>
-
-        <div class="hero-progress">
-          <div class="hero-progress-labels">
-            <span>51 kg</span>
-            <span id="heroProgressPct">0%</span>
-            <span>60 kg</span>
-          </div>
-          <div class="hero-progress-track">
-            <div class="hero-progress-fill" id="heroProgressFill" style="width:0%"></div>
-          </div>
-        </div>
+Becoming stronger every day — through discipline, consistency, and small improvements.        </p>
 
         <div class="hero-stats">
           <div class="stat-card tilt-card" data-tilt>
-            <div class="stat-icon">⚖️</div>
-            <div class="stat-value"><span class="counter" data-target="51" data-decimals="0">0</span><span class="stat-unit">kg</span></div>
-            <div class="stat-label">Current Weight</div>
+            <div class="stat-icon">🌟</div>
+            <div class="stat-value">Believe</div>
           </div>
           <div class="stat-card tilt-card" data-tilt>
-            <div class="stat-icon">🎯</div>
-            <div class="stat-value"><span class="counter" data-target="60" data-decimals="0">0</span><span class="stat-unit">kg</span></div>
-            <div class="stat-label">Goal Weight</div>
+            <div class="stat-icon">💪</div>
+            <div class="stat-value">Discipline</div>
           </div>
           <div class="stat-card tilt-card" data-tilt>
-            <div class="stat-icon">📊</div>
-            <div class="stat-value"><span class="counter" data-target="16.6" data-decimals="1">0</span></div>
-            <div class="stat-label">BMI Score</div>
+            <div class="stat-icon">🏆</div>
+            <div class="stat-value">Conquer</div>
           </div>
         </div>
       </div>
@@ -152,67 +125,15 @@
           <circle cx="240" cy="252" r="18" fill="url(#dumbbellGrad)" class="dumbbell dumbbell-right"/>
           <ellipse cx="200" cy="460" rx="110" ry="14" fill="#4ADE80" opacity="0.15"/>
         </svg>
-        <div class="floating-badge badge-1">🍌 +1 Banana</div>
-        <div class="floating-badge badge-2">🥚 Protein Up</div>
-        <div class="floating-badge badge-3">💧 3L Water</div>
+        <div class="floating-badge badge-1">📚 Learning</div>
+        <div class="floating-badge badge-2">🙆 Exercise</div>
+        <div class="floating-badge badge-3">⚡ Motivation</div>
       </div>
     </div>
-    <a href="#about" class="scroll-cue" aria-label="Scroll down">
       <span></span>
     </a>
   </section>
 
-  <!-- ============================== -->
-  <!-- ABOUT ME -->
-  <!-- ============================== -->
-  <section id="about" class="about-section reveal">
-    <div class="section-head">
-      <p class="section-eyebrow">Profile</p>
-      <h2 class="section-title">About This Plan</h2>
-    </div>
-
-    <div class="profile-card glass-card tilt-card" data-tilt>
-      <div class="profile-avatar">🧑‍🎓</div>
-      <div class="profile-grid">
-        <div class="profile-item">
-          <span class="profile-label">Name</span>
-          <span class="profile-value">Weight Gain Plan</span>
-        </div>
-        <div class="profile-item">
-          <span class="profile-label">Age</span>
-          <span class="profile-value">25</span>
-        </div>
-        <div class="profile-item">
-          <span class="profile-label">Gender</span>
-          <span class="profile-value">Male</span>
-        </div>
-        <div class="profile-item">
-          <span class="profile-label">Height</span>
-          <span class="profile-value">5'9"</span>
-        </div>
-        <div class="profile-item">
-          <span class="profile-label">Current Weight</span>
-          <span class="profile-value">51 kg</span>
-        </div>
-        <div class="profile-item">
-          <span class="profile-label">Goal Weight</span>
-          <span class="profile-value">60 kg</span>
-        </div>
-        <div class="profile-item">
-          <span class="profile-label">Monthly Budget</span>
-          <span class="profile-value">Rs. 2,000</span>
-        </div>
-        <div class="profile-item">
-          <span class="profile-label">Lifestyle</span>
-          <span class="profile-value">Hostel Student</span>
-        </div>
-      </div>
-      <div class="profile-goal">
-        <span class="goal-tag">Main Goal</span>
-        <p>Healthy weight gain through consistent diet and bodyweight workouts — no kitchen required.</p>
-      </div>
-    </div>
-  </section>
 
   <!-- ============================== -->
   <!-- DAILY ROUTINE / TIMELINE -->
@@ -226,54 +147,6 @@
 
     <div class="timeline" id="timeline">
       <!-- Timeline items injected by JS -->
-    </div>
-  </section>
-
-  <!-- ============================== -->
-  <!-- WORKOUT SECTION -->
-  <!-- ============================== -->
-  <section id="workout" class="workout-section reveal">
-    <div class="section-head">
-      <p class="section-eyebrow">Monday – Saturday</p>
-      <h2 class="section-title">Workout Plan</h2>
-      <p class="section-sub">Bodyweight training, 30 minutes a day</p>
-    </div>
-
-    <div class="workout-grid" id="workoutGrid">
-      <!-- Injected by JS -->
-    </div>
-
-    <div class="rest-day-card glass-card">
-      <div class="rest-icon">🌙</div>
-      <div>
-        <h3>Sunday</h3>
-        <p>Rest Day — recovery is part of the plan too.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================== -->
-  <!-- NUTRITION SECTION -->
-  <!-- ============================== -->
-  <section id="nutrition" class="nutrition-section reveal">
-    <div class="section-head">
-      <p class="section-eyebrow">Fuel</p>
-      <h2 class="section-title">Daily Nutrition Goal</h2>
-      <p class="section-sub">What goes on the plate, every single day</p>
-    </div>
-
-    <div class="nutrition-grid" id="nutritionGrid">
-      <!-- Injected by JS -->
-    </div>
-
-    <div class="shopping-block">
-      <div class="section-head">
-        <p class="section-eyebrow">Once a month</p>
-        <h2 class="section-title">Monthly Shopping List</h2>
-      </div>
-      <div class="shopping-grid" id="shoppingGrid">
-        <!-- Injected by JS -->
-      </div>
     </div>
   </section>
 
@@ -295,7 +168,7 @@
             <circle cx="100" cy="100" r="86" class="ring-fill" id="ringFill"/>
           </svg>
           <div class="progress-ring-label">
-            <span id="progressPercent">0%</span>
+            <span id="progressPercent">15%</span>
             <small>Complete</small>
           </div>
         </div>
@@ -311,31 +184,18 @@
       </div>
     </div>
 
-    <!-- WEIGHT TRACKER -->
-    <div class="weight-tracker glass-card">
-      <div class="section-head" style="text-align:left; margin-bottom: 24px;">
-        <p class="section-eyebrow">The bigger picture</p>
-        <h2 class="section-title" style="font-size: clamp(24px,3vw,34px);">Weight Tracker</h2>
-      </div>
-      <div class="weight-tracker-top">
-        <div class="wt-current">
-          <span class="wt-num">51</span><span class="wt-unit">kg</span>
-          <small>Current</small>
-        </div>
-        <div class="wt-current wt-goal">
-          <span class="wt-num">60</span><span class="wt-unit">kg</span>
-          <small>Goal</small>
-        </div>
-      </div>
-      <div class="milestone-track">
-        <div class="milestone-fill" id="milestoneFill"></div>
-        <div class="milestone" data-weight="51" style="left:0%"><span class="milestone-dot"></span><span class="milestone-label">51</span></div>
-        <div class="milestone" data-weight="52" style="left:11.1%"><span class="milestone-dot"></span><span class="milestone-label">52</span></div>
-        <div class="milestone" data-weight="54" style="left:33.3%"><span class="milestone-dot"></span><span class="milestone-label">54</span></div>
-        <div class="milestone" data-weight="56" style="left:55.5%"><span class="milestone-dot"></span><span class="milestone-label">56</span></div>
-        <div class="milestone" data-weight="58" style="left:77.7%"><span class="milestone-dot"></span><span class="milestone-label">58</span></div>
-        <div class="milestone" data-weight="60" style="left:100%"><span class="milestone-dot"></span><span class="milestone-label">60</span></div>
-      </div>
+ <!-- ============================== -->
+  <!-- WORKOUT SECTION -->
+  <!-- ============================== -->
+  <section id="workout" class="workout-section reveal">
+    <div class="section-head">
+      <p class="section-eyebrow">Sunday – Friday</p>
+      <h2 class="section-title">Workout Plan</h2>
+      <p class="section-sub">Bodyweight training, 30 minutes a day</p>
+    </div>
+
+    <div class="workout-grid" id="workoutGrid">
+      <!-- Injected by JS -->
     </div>
   </section>
 
@@ -345,23 +205,10 @@
   <!-- FOOTER -->
   <!-- ============================== -->
   <footer class="site-footer">
-    <p>💪 Built for one goal — 51 kg to 60 kg, the healthy way.</p>
+    <p>Built for one purpose — becoming the best version of myself.</p>
     <p class="footer-sub">Consistency beats intensity.</p>
+        <p>Bibek Yadav</p>
   </footer>
-
-  <!-- INSTALL APP BANNER -->
-  <div class="install-banner" id="installBanner">
-    <span class="install-icon">💪</span>
-    <div class="install-text">
-      <strong>Install this app</strong>
-      <small>Add it to your home screen for a full app-like experience.</small>
-    </div>
-    <button class="btn-install" id="installBtn">Install</button>
-    <button class="install-close" id="installClose" aria-label="Dismiss">✕</button>
-  </div>
-
-  <!-- REMINDER PERMISSION TOAST -->
-  <div class="toast" id="toast"></div>
 
   <!-- FLOATING ACTION BUTTON -->
   <button class="fab" id="fabTop" aria-label="Scroll to top">↑</button>
