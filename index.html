@@ -8,6 +8,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="style.css" />
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" href="icon-192.png" />
+<link rel="apple-touch-icon" href="icon-192.png" />
+<meta name="theme-color" content="#0F172A" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Bibek Routine" />
 </head>
 <body>
 
@@ -59,6 +67,9 @@
 
       <div class="header-right">
         <div class="live-clock" id="liveClock">--:--:--</div>
+        <button class="reminder-bell" id="reminderBellToggle" aria-label="Enable reminders" title="Enable reminders">
+          🔕
+        </button>
         <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
           <span class="toggle-icon sun">☀️</span>
           <span class="toggle-icon moon">🌙</span>
@@ -130,8 +141,6 @@ Becoming stronger every day — through discipline, consistency, and small impro
         <div class="floating-badge badge-3">⚡ Motivation</div>
       </div>
     </div>
-      <span></span>
-    </a>
   </section>
 
 
@@ -209,6 +218,20 @@ Becoming stronger every day — through discipline, consistency, and small impro
     <p class="footer-sub">Consistency beats intensity.</p>
         <p>Bibek Yadav</p>
   </footer>
+
+  <!-- INSTALL APP BANNER -->
+  <div class="install-banner" id="installBanner">
+    <span class="install-icon">💪</span>
+    <div class="install-text">
+      <strong>Install this app</strong>
+      <small>Add it to your home screen for a full app-like experience.</small>
+    </div>
+    <button class="btn-install" id="installBtn">Install</button>
+    <button class="install-close" id="installClose" aria-label="Dismiss">✕</button>
+  </div>
+
+  <!-- REMINDER PERMISSION TOAST -->
+  <div class="toast" id="toast"></div>
 
   <!-- FLOATING ACTION BUTTON -->
   <button class="fab" id="fabTop" aria-label="Scroll to top">↑</button>
