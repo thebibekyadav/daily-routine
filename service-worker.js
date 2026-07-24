@@ -2,7 +2,7 @@
    SERVICE WORKER — offline caching + notification click handling
    ========================================================================== */
 
-const CACHE_NAME = 'wgd-cache-v3';
+const CACHE_NAME = 'bibek-routine-cache-v1';
 const ASSETS = [
   './',
   './index.html',
@@ -21,10 +21,21 @@ const ASSETS = [
   './icon-512-maskable.png',
 ];
 
-// Install: pre-cache the app shell
+// Install: pre-cache the app shell (resilient — one missing/renamed file
+// won't block the whole install, unlike cache.addAll which is all-or-nothing)
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)).then(() => self.skipWaiting())
+    caches.open(CACHE_NAME).then(async (cache) => {
+      await Promise.all(
+        ASSETS.map(async (url) => {
+          try {
+            await cache.add(url);
+          } catch (err) {
+            console.warn('[SW] Skipped caching (missing or failed):', url, err);
+          }
+        })
+      );
+    }).then(() => self.skipWaiting())
   );
 });
 
