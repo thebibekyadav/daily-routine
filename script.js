@@ -1,7 +1,8 @@
 /* ==========================================================================
    Bibek Routine — SCRIPT
    Sections: Data, Loading Screen, Background FX, Header/Nav, Clock, Theme,
-   Typing Effect, Counters, Tilt, Parallax, Timeline, Workout, Checklist + Progress + LocalStorage, Confetti,
+   Typing Effect, Counters, Tilt, Parallax, Timeline, Workout,
+   Checklist + Progress + LocalStorage, Reminders, PWA Install, Confetti,
    Scroll Reveal, FAB, Ripple
    ========================================================================== */
 
@@ -44,21 +45,12 @@
     { icon: '🤸', name: 'Stretching', detail: '5 minutes' },
   ];
 
-  const SHOPPING_DATA = [
-    { icon: '🥚', name: 'Eggs', qty: '60 pcs' },
-    { icon: '🍌', name: 'Bananas', qty: '90 pcs' },
-    { icon: '🥜', name: 'Roasted Peanuts', qty: '2–3 kg' },
-    { icon: '🍇', name: 'Raisins', qty: '500 g' },
-    { icon: '🌰', name: 'Almonds', qty: '250 g' },
-    { icon: '🥥', name: 'Cashews', qty: '250 g' },
-  ];
-
   const TYPED_STRING = 'A Journey of Growth, Strength, and Confidence';
-  const MILESTONES = [51, 52, 54, 56, 58, 60];
-  const CURRENT_WEIGHT = 51;
-  const GOAL_WEIGHT = 60;
   const STORAGE_KEY = 'wgd_checklist_v1';
   const THEME_KEY = 'wgd_theme';
+  const REMINDER_IDS_KEY = 'wgd_reminder_ids_v1';
+  const REMINDER_FIRED_KEY = 'wgd_reminder_fired_v1';
+  const REMINDERS_ON_KEY = 'wgd_reminders_on';
 
   /* ------------------------------------------------------------------ */
   /* LOADING SCREEN                                                      */
@@ -235,19 +227,6 @@
     counters.forEach((c) => io.observe(c));
   }
 
-  /* Hero weight progress bar */
-  function animateHeroProgress() {
-    const fill = document.getElementById('heroProgressFill');
-    const pctLabel = document.getElementById('heroProgressPct');
-    const pct = Math.round(((CURRENT_WEIGHT - 51) / (GOAL_WEIGHT - 51)) * 100);
-    // Always start visible with a minimum sliver so users see where they are
-    const displayPct = Math.max(pct, 4);
-    requestAnimationFrame(() => {
-      fill.style.width = displayPct + '%';
-    });
-    pctLabel.textContent = pct + '%';
-  }
-
   /* ------------------------------------------------------------------ */
   /* TILT (3D card hover) + MOUSE PARALLAX (hero) + CUSTOM CURSOR       */
   /* ------------------------------------------------------------------ */
@@ -298,6 +277,7 @@
 
   function renderTimeline() {
     const container = document.getElementById('timeline');
+    if (!container) { console.warn('[renderTimeline] #timeline not found in HTML — skipping.'); return; }
     const frag = document.createDocumentFragment();
     ROUTINE_DATA.forEach((item, idx) => {
       const el = document.createElement('div');
@@ -310,7 +290,10 @@
           <div class="tl-title">${item.title}</div>
           <div class="tl-desc">${item.desc}</div>
         </div>
-        <span class="tl-check" data-id="routine-${idx}" role="checkbox" aria-checked="false" tabindex="0"></span>
+        <div class="tl-actions">
+          <span class="tl-bell" data-id="routine-${idx}" role="checkbox" aria-checked="false" tabindex="0" title="Remind me at ${item.time}">🔔</span>
+          <span class="tl-check" data-id="routine-${idx}" role="checkbox" aria-checked="false" tabindex="0"></span>
+        </div>
       `;
       frag.appendChild(el);
     });
@@ -323,6 +306,7 @@
 
   function renderWorkout() {
     const container = document.getElementById('workoutGrid');
+    if (!container) { console.warn('[renderWorkout] #workoutGrid not found in HTML — skipping.'); return; }
     const frag = document.createDocumentFragment();
     WORKOUT_DATA.forEach((w) => {
       const el = document.createElement('div');
@@ -364,6 +348,7 @@
 
   function renderChecklist() {
     const container = document.getElementById('checklist');
+    if (!container) { console.warn('[renderChecklist] #checklist not found in HTML — skipping.'); return; }
     container.innerHTML = '';
     const frag = document.createDocumentFragment();
     ROUTINE_DATA.forEach((item, idx) => {
@@ -453,24 +438,6 @@
   }
 
   /* ------------------------------------------------------------------ */
-  // /* WEIGHT TRACKER MILESTONES                                          */
-  // /* ------------------------------------------------------------------ */
-
-  // function initWeightTracker() {
-  //   const fill = document.getElementById('milestoneFill');
-  //   const range = GOAL_WEIGHT - MILESTONES[0];
-  //   const progressAcrossRange = ((CURRENT_WEIGHT - MILESTONES[0]) / range) * 100;
-  //   requestAnimationFrame(() => {
-  //     fill.style.width = Math.max(progressAcrossRange, 2) + '%';
-  //   });
-
-  //   document.querySelectorAll('.milestone').forEach((m) => {
-  //     const w = parseFloat(m.dataset.weight);
-  //     if (w <= CURRENT_WEIGHT) m.classList.add('reached');
-  //   });
-  // }
-
-  /* ------------------------------------------------------------------ */
   /* CONFETTI                                                            */
   /* ------------------------------------------------------------------ */
 
@@ -545,6 +512,7 @@
 
   function initFab() {
     const fab = document.getElementById('fabTop');
+    if (!fab) { console.warn('[initFab] #fabTop not found in HTML — skipping.'); return; }
     window.addEventListener('scroll', () => {
       fab.classList.toggle('visible', window.scrollY > 500);
     }, { passive: true });
@@ -576,42 +544,320 @@
   }
 
   /* ------------------------------------------------------------------ */
+  /* TOAST                                                               */
+  /* ------------------------------------------------------------------ */
+
+  let toastTimer = null;
+  function showToast(message, duration) {
+    const toast = document.getElementById('toast');
+    if (!toast) return;
+    toast.textContent = message;
+    toast.classList.add('visible');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('visible'), duration || 2800);
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* SERVICE WORKER REGISTRATION (offline support + notification clicks) */
+  /* ------------------------------------------------------------------ */
+
+  function initServiceWorker() {
+    if (!('serviceWorker' in navigator)) return;
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./service-worker.js').catch(() => {
+        // Offline support just won't be available; app still works fully online.
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* INSTALL PROMPT (Add to Home Screen)                                 */
+  /* ------------------------------------------------------------------ */
+
+  let deferredInstallPrompt = null;
+
+  function initInstallBanner() {
+    const banner = document.getElementById('installBanner');
+    const installBtn = document.getElementById('installBtn');
+    const closeBtn = document.getElementById('installClose');
+    if (!banner || !installBtn || !closeBtn) { console.warn('[initInstallBanner] install banner elements not found in HTML — skipping.'); return; }
+
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      if (!isStandalone && !sessionStorage.getItem('wgd_install_dismissed')) {
+        setTimeout(() => banner.classList.add('visible'), 1500);
+      }
+    });
+
+    installBtn.addEventListener('click', async () => {
+      if (!deferredInstallPrompt) return;
+      banner.classList.remove('visible');
+      deferredInstallPrompt.prompt();
+      const choice = await deferredInstallPrompt.userChoice;
+      deferredInstallPrompt = null;
+      if (choice && choice.outcome === 'accepted') {
+        showToast('App installed 💪');
+      }
+    });
+
+    closeBtn.addEventListener('click', () => {
+      banner.classList.remove('visible');
+      sessionStorage.setItem('wgd_install_dismissed', '1');
+    });
+
+    window.addEventListener('appinstalled', () => {
+      banner.classList.remove('visible');
+      showToast('App installed 💪');
+    });
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* REMINDERS — per-task browser notifications                         */
+  /* ------------------------------------------------------------------ */
+
+  function loadReminderIds() {
+    try {
+      return new Set(JSON.parse(localStorage.getItem(REMINDER_IDS_KEY) || '[]'));
+    } catch (e) {
+      return new Set();
+    }
+  }
+  function saveReminderIds(set) {
+    localStorage.setItem(REMINDER_IDS_KEY, JSON.stringify(Array.from(set)));
+  }
+
+  function loadFiredLog() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(REMINDER_FIRED_KEY) || '{}');
+      const today = new Date().toDateString();
+      if (raw.date !== today) return { date: today, ids: [] };
+      return raw;
+    } catch (e) {
+      return { date: new Date().toDateString(), ids: [] };
+    }
+  }
+  function saveFiredLog(log) {
+    localStorage.setItem(REMINDER_FIRED_KEY, JSON.stringify(log));
+  }
+
+  let reminderIds = loadReminderIds();
+  let firedLog = loadFiredLog();
+  let remindersEnabled = localStorage.getItem(REMINDERS_ON_KEY) === '1';
+
+  // Parses the first "H:MM AM/PM" occurrence in a routine time string into minutes since midnight
+  function parseTimeToMinutes(str) {
+    const match = str.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+    if (!match) return null;
+    let hours = parseInt(match[1], 10);
+    const minutes = parseInt(match[2], 10);
+    const ampm = match[3].toUpperCase();
+    if (ampm === 'PM' && hours !== 12) hours += 12;
+    if (ampm === 'AM' && hours === 12) hours = 0;
+    return hours * 60 + minutes;
+  }
+
+  function syncBellUI() {
+    document.querySelectorAll('.tl-bell').forEach((bell) => {
+      const on = reminderIds.has(bell.dataset.id);
+      bell.classList.toggle('on', on);
+      bell.setAttribute('aria-checked', String(on));
+    });
+    const headerBell = document.getElementById('reminderBellToggle');
+    if (!headerBell) return;
+    headerBell.textContent = remindersEnabled ? '🔔' : '🔕';
+    headerBell.classList.toggle('active', remindersEnabled);
+  }
+
+  function requestNotificationPermission() {
+    if (!('Notification' in window)) {
+      showToast('Notifications are not supported on this browser');
+      return Promise.resolve(false);
+    }
+    if (Notification.permission === 'granted') return Promise.resolve(true);
+    if (Notification.permission === 'denied') {
+      showToast('Notifications are blocked — enable them in your browser settings');
+      return Promise.resolve(false);
+    }
+    return Notification.requestPermission().then((perm) => perm === 'granted');
+  }
+
+  function fireNotification(item) {
+    const title = `⏰ ${item.title}`;
+    const options = {
+      body: item.desc || `It's time for ${item.title} (${item.time})`,
+      icon: 'icon-192.png',
+      badge: 'icon-192.png',
+      tag: 'wgd-' + item.title,
+      vibrate: [120, 60, 120],
+    };
+
+    // Android Chrome requires notifications to go through an active service worker —
+    // the raw `new Notification()` constructor is disabled there. We try the service
+    // worker route first, but race it against a timeout so a broken/inactive service
+    // worker can never hang this forever and silently swallow the reminder.
+    const showViaServiceWorker = () => {
+      if (!('serviceWorker' in navigator)) return Promise.reject('service-worker-unsupported');
+      return Promise.race([
+        navigator.serviceWorker.ready,
+        new Promise((_, reject) => setTimeout(() => reject('service-worker-not-ready-in-time'), 4000)),
+      ]).then((reg) => {
+        if (reg && typeof reg.showNotification === 'function') return reg.showNotification(title, options);
+        throw 'show-notification-unavailable';
+      });
+    };
+
+    showViaServiceWorker().catch((reason) => {
+      console.warn('[Reminders] Service worker notification failed (' + reason + '), falling back to Notification API');
+      try {
+        new Notification(title, options);
+      } catch (e) {
+        console.error('[Reminders] Could not show notification at all:', e);
+        showToast('⚠️ Reminder failed to show — check notification permission');
+      }
+    });
+  }
+
+  // Fires an immediate confirmation notification so you can verify reminders
+  // actually work end-to-end right away, instead of waiting for a scheduled time.
+  function fireTestNotification() {
+    fireNotification({
+      title: 'Reminders are on',
+      desc: "You'll get notified when each scheduled task's time arrives.",
+      time: '',
+    });
+  }
+
+  function checkReminders() {
+    if (!remindersEnabled || reminderIds.size === 0) return;
+    if (!('Notification' in window) || Notification.permission !== 'granted') {
+      console.warn('[Reminders] Enabled but Notification.permission is "' + (window.Notification ? Notification.permission : 'unsupported') + '" — reminders cannot fire until permission is granted again.');
+      return;
+    }
+
+    const today = new Date().toDateString();
+    if (firedLog.date !== today) firedLog = { date: today, ids: [] };
+
+    const now = new Date();
+    const nowMinutes = now.getHours() * 60 + now.getMinutes();
+
+    ROUTINE_DATA.forEach((item, idx) => {
+      const id = 'routine-' + idx;
+      if (!reminderIds.has(id)) return;
+      if (firedLog.ids.includes(id)) return;
+      const taskMinutes = parseTimeToMinutes(item.time);
+      if (taskMinutes === null) return;
+      if (nowMinutes === taskMinutes) {
+        fireNotification(item);
+        firedLog.ids.push(id);
+        saveFiredLog(firedLog);
+      }
+    });
+  }
+
+  function toggleReminderForTask(id) {
+    if (reminderIds.has(id)) {
+      reminderIds.delete(id);
+    } else {
+      if (!remindersEnabled) {
+        showToast('Turn on reminders (bell icon, top right) first');
+        return;
+      }
+      reminderIds.add(id);
+    }
+    saveReminderIds(reminderIds);
+    syncBellUI();
+  }
+
+  function initReminders() {
+    const headerBell = document.getElementById('reminderBellToggle');
+    if (!headerBell) { console.warn('[initReminders] #reminderBellToggle not found in HTML — reminders disabled.'); return; }
+
+    headerBell.addEventListener('click', async () => {
+      if (remindersEnabled) {
+        remindersEnabled = false;
+        localStorage.setItem(REMINDERS_ON_KEY, '0');
+        syncBellUI();
+        showToast('Reminders turned off');
+        return;
+      }
+      const granted = await requestNotificationPermission();
+      if (granted) {
+        remindersEnabled = true;
+        localStorage.setItem(REMINDERS_ON_KEY, '1');
+        syncBellUI();
+        showToast('Reminders on — tap 🔔 on any task to schedule it');
+        fireTestNotification();
+      }
+    });
+
+    document.querySelectorAll('.tl-bell').forEach((bell) => {
+      bell.addEventListener('click', () => toggleReminderForTask(bell.dataset.id));
+      bell.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleReminderForTask(bell.dataset.id);
+        }
+      });
+    });
+
+    syncBellUI();
+    checkReminders();
+    setInterval(checkReminders, 20000);
+  }
+
+  /* ------------------------------------------------------------------ */
   /* HERO INIT (after loader hides)                                      */
   /* ------------------------------------------------------------------ */
 
   function initHeroAnimations() {
     typeTitle();
-    animateHeroProgress();
   }
 
   /* ------------------------------------------------------------------ */
   /* BOOTSTRAP                                                           */
   /* ------------------------------------------------------------------ */
 
+  // Runs an init/render function in isolation — if the HTML it depends on
+  // was edited or removed, it logs a warning instead of throwing and taking
+  // down every feature that was scheduled to run after it.
+  function safeRun(fn, label) {
+    try {
+      fn();
+    } catch (err) {
+      console.error('[Init] "' + label + '" failed — likely because HTML it depends on was changed or removed. Everything else still runs.', err);
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
-    buildStars();
-    buildFloatingIcons();
-    initHeader();
-    initClock();
-    initTheme();
-    initCustomCursor();
-    initParallax();
+    safeRun(buildStars, 'buildStars');
+    safeRun(buildFloatingIcons, 'buildFloatingIcons');
+    safeRun(initHeader, 'initHeader');
+    safeRun(initClock, 'initClock');
+    safeRun(initTheme, 'initTheme');
+    safeRun(initCustomCursor, 'initCustomCursor');
+    safeRun(initParallax, 'initParallax');
+    safeRun(initServiceWorker, 'initServiceWorker');
+    safeRun(initInstallBanner, 'initInstallBanner');
 
-    renderTimeline();
-    renderWorkout();
-    renderChecklist();
+    safeRun(renderTimeline, 'renderTimeline');
+    safeRun(renderWorkout, 'renderWorkout');
+    safeRun(renderChecklist, 'renderChecklist');
 
-    initTilt(); // must run after cards exist
-    initCounters();
-    initScrollReveal();
-    initFab();
-    initRipple();
-    initResetButton();
+    safeRun(initTilt, 'initTilt'); // must run after cards exist
+    safeRun(initCounters, 'initCounters');
+    safeRun(initScrollReveal, 'initScrollReveal');
+    safeRun(initFab, 'initFab');
+    safeRun(initRipple, 'initRipple');
+    safeRun(initResetButton, 'initResetButton');
+    safeRun(initReminders, 'initReminders'); // must run after timeline bells exist
 
-    attachTimelineCheckEvents();
-    attachChecklistEvents();
-    syncTimelineChecks();
-    updateProgress();
+    safeRun(attachTimelineCheckEvents, 'attachTimelineCheckEvents');
+    safeRun(attachChecklistEvents, 'attachChecklistEvents');
+    safeRun(syncTimelineChecks, 'syncTimelineChecks');
+    safeRun(updateProgress, 'updateProgress');
   });
 
 })();
