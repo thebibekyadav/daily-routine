@@ -230,6 +230,15 @@ body.light-theme .nav-link.active { color: #fff; }
 body.light-theme .toggle-icon.moon { transform: translateY(-30px); opacity: 0; }
 body.light-theme .toggle-icon.sun { transform: translateY(0); opacity: 1; }
 
+.reminder-bell {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--color-card); border: 1px solid var(--color-border);
+  display: flex; align-items: center; justify-content: center; font-size: 16px;
+  transition: background 0.25s, box-shadow 0.25s, transform 0.15s;
+}
+.reminder-bell:hover { transform: translateY(-2px); }
+.reminder-bell.active { background: var(--gradient-primary); box-shadow: var(--shadow-glow-green); }
+
 .nav-burger { display: none; flex-direction: column; gap: 5px; width: 40px; height: 40px; align-items: center; justify-content: center; }
 .nav-burger span { width: 20px; height: 2px; background: var(--color-text); transition: 0.3s; border-radius: 2px; }
 .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
@@ -360,6 +369,16 @@ section { padding: 120px 32px; max-width: 1280px; margin: 0 auto; }
 .timeline-item.completed { opacity: 0.6; }
 .timeline-item.completed .tl-title { text-decoration: line-through; }
 
+.tl-actions { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.tl-bell {
+  flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  font-size: 13px; background: var(--color-card); border: 1px solid var(--color-border);
+  transition: background 0.25s, box-shadow 0.25s, transform 0.15s;
+}
+.tl-bell:hover { transform: scale(1.08); }
+.tl-bell.on { background: var(--gradient-purple); box-shadow: 0 0 14px rgba(139,92,246,0.5); border-color: transparent; }
+
 /* ---------- WORKOUT ---------- */
 .workout-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
 .workout-card {
@@ -445,6 +464,45 @@ section { padding: 120px 32px; max-width: 1280px; margin: 0 auto; }
 .fab.visible { opacity: 1; visibility: visible; transform: translateY(0); }
 .fab:hover { box-shadow: 0 14px 36px rgba(74,222,128,0.55); transform: translateY(-3px); }
 
+/* ---------- INSTALL BANNER ---------- */
+.install-banner {
+  position: fixed; left: 20px; right: 20px; bottom: 20px; z-index: 900;
+  max-width: 440px; margin: 0 auto;
+  display: flex; align-items: center; gap: 14px; padding: 16px 18px;
+  background: var(--color-card-strong); border: 1px solid var(--color-border);
+  border-radius: var(--radius-md); backdrop-filter: blur(20px);
+  box-shadow: var(--shadow-card);
+  transform: translateY(140%); opacity: 0; transition: transform 0.4s var(--ease), opacity 0.4s;
+}
+.install-banner.visible { transform: translateY(0); opacity: 1; }
+.install-icon { font-size: 24px; flex-shrink: 0; }
+.install-text { flex: 1; min-width: 0; }
+.install-text strong { display: block; font-size: 14px; }
+.install-text small { color: var(--color-text-dim); font-size: 12px; line-height: 1.4; }
+.btn-install {
+  flex-shrink: 0; padding: 9px 16px; border-radius: 999px; font-size: 13px; font-weight: 700;
+  background: var(--gradient-primary); color: var(--color-bg);
+  transition: transform 0.15s;
+}
+.btn-install:hover { transform: translateY(-2px); }
+.install-close {
+  flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; color: var(--color-text-dim);
+  display: flex; align-items: center; justify-content: center; font-size: 12px;
+  transition: background 0.2s;
+}
+.install-close:hover { background: var(--color-card); }
+
+/* ---------- TOAST ---------- */
+.toast {
+  position: fixed; top: 90px; left: 50%; transform: translateX(-50%) translateY(-20px);
+  z-index: 1200; padding: 12px 22px; border-radius: 999px;
+  background: var(--color-card-strong); border: 1px solid var(--color-border);
+  backdrop-filter: blur(20px); font-size: 13px; font-weight: 600;
+  opacity: 0; visibility: hidden; transition: opacity 0.3s, transform 0.3s, visibility 0.3s;
+  box-shadow: var(--shadow-card); white-space: nowrap;
+}
+.toast.visible { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+
 /* ---------- CONFETTI ---------- */
 #confettiCanvas { position: fixed; inset: 0; pointer-events: none; z-index: 9997; display: none; }
 
@@ -486,11 +544,11 @@ section { padding: 120px 32px; max-width: 1280px; margin: 0 auto; }
   .live-clock { display: none; }
   .hero-stats { grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
   .stat-value { font-size: 20px; }
-  .profile-grid { grid-template-columns: 1fr; }
-  .weight-tracker-top { gap: 30px; }
-  .milestone-label { font-size: 9px; }
   .timeline { padding-left: 30px; }
   .timeline-item::before { left: -26px; }
+  .tl-desc { font-size: 12.5px; }
+  .install-banner { left: 12px; right: 12px; bottom: 12px; padding: 14px; }
+  .install-text small { display: none; }
 }
 
 /* Reduced motion */
